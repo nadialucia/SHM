@@ -1,0 +1,23 @@
+# Geometry
+geometry:
+  width: 0.3
+  height: 0.1
+  length: 2.0
+
+# Mesh parameters  
+mesh:
+  n_p: 10  # number of partitions
+  n_e: 100 # number of elements
+  n_mp: 20 # measurement points
+  n_modes: 4 # number of modes to extract
+
+# Material properties
+material:
+  E: 2.6e10    # Young's modulus
+  rho: 2300.0  # density
+  nu: 0.3      # Poisson ratio
+
+# Damage parameters
+damage:
+  scenario: 1
+  intactness: [0.8]
