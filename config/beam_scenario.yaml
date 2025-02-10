@@ -1,0 +1,7 @@
+beam_config: "config/beam_properties.yaml"
+n_modes: 4
+damage_cases:
+  - element: 4
+    factor: 0.5  # 30% reduction in stiffness
+  # - element: 3
+  #   factor: 0.3

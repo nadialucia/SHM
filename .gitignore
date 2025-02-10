@@ -9,6 +9,9 @@ __pycache__/
 logs/
 *.log
 
+# Results
+results/
+
 # VS Code
 .vscode/
 

@@ -1,0 +1,16 @@
+# Geometry
+geometry:
+  width: 0.3
+  height: 0.1
+  length: 2.0
+
+# Mesh parameters  
+mesh:
+  n_p: 10  # number of partitions - used to generate example beam
+  n_e: 100 # number of elements
+
+# Material properties
+material:
+  E: 26000000000.0 # 2.6e10   # Young's modulus
+  rho: 2300.0  # density
+  nu: 0.3      # Poisson ratio

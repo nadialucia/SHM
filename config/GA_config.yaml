@@ -1,1 +1,96 @@
-generations: 10
+genetic_algorithm:
+  num_generations: 150
+  num_parents_mating: 100
+  sol_per_pop: 500
+  keep_elitism: 5
+  num_genes: 10  # 10
+  init_range_low: 10000000000.0 # 5e9
+  init_range_high: 40000000000.0 # 5e10
+  random_seed: 3
+  gene_space:
+    low: 1000000000.0   #1e9
+    high: 50000000000.0 #5e10
+  stop_criteria: saturate_10
+
+
+  # # Add gene space to restrict possible values
+  # gene_space: [
+  #   {'low': 1, 'high': 10, 'step': 1},  # First gene: damage location (integer 1-10)
+  #   {'low': 5000000000.0, 'high': 50000000000.0},         # Second gene: undamaged value
+  #   {'low': 5000000000.0, 'high': 50000000000.0}          # Third gene: damaged value
+  # ]
+
+operators:
+  crossover:
+    type: "blend"
+    probability: 0.9
+
+  # mutation:
+  #   type: "spillover"
+  #   probability: 0.1
+  #   spillover_rate: 0.2
+  #   forward_prob: 0.5  # Optional: probability of spilling forward vs backward
+  # mutation:
+  #   type: "spillover"
+  #   probability: 0.3
+  #   spillover_rate: 0.2
+  #   forward_prob: 0.5
+  #   variation_prob: 0.5    # 30% chance of adding variation
+  #   variation_range: 0.3   # ±10% variation in spillover amount
+  
+  mutation:
+    type: "random_selector"
+    mutations:
+      - type: "random"          # using PyGAD or custom "random" mutation
+        selection_probability: 2
+        mutation_probability: 0.5
+        random_mutation_min_val: -1000000000.0 # -1e9
+        random_mutation_max_val: 1000000000.0 # 1e9
+      - type: "spillover"
+        selection_probability: 1
+        probability: 0.1
+        spillover_rate: 0.2
+        forward_prob: 0.5
+        variation_prob: 0.0
+        variation_range: 0.1
+      - type: "optimized_creep"
+        selection_probability: 3
+        probability: 0.1
+        addition_probability: 0.5
+        mutation_min_val: 500000000.0   # 5e8
+        mutation_max_val: 5000000000.0  # 5e9
+      - type: "directional_creep"
+        selection_probability: 1
+        probability: 0.8
+        direction_bias: 0.5
+        mutation_min_val: 100000000.0  # 1e8
+        mutation_max_val: 1000000000.0  # 1e9
+      - type: "distancing"   # new distancing mutation
+        selection_probability: 1
+        probability: 0.8
+        distancing_min_factor: 0.9
+        distancing_max_factor: 1.1
+      # - type: "creep"        # new creep mutation
+      #   selection_probability: 0.8
+      #   probability: 0.1
+      #   addition_probability: 0.5
+      #   mutation_min_val: 500000000.0
+      #   mutation_max_val: 5000000000.0
+        
+          
+
+  selection:
+    type: "sus"
+
+
+optimization:
+  fitness:
+    type: "standard"
+    parameters:
+      weight_freq: 0.5
+      weight_mode: 0.5
+      num_modes: 4
+    save_filepath: "results/ga_optimization/ga_data.jsonl"
+
+output_directory: "results/ga_optimization"
+save_intermediate: true
