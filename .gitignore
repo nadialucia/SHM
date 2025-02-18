@@ -9,8 +9,14 @@ __pycache__/
 logs/
 *.log
 
+# Abaqus files
+abaqus_files/
+
 # Results
 results/
+
+# Transcript
+sem*
 
 # VS Code
 .vscode/
