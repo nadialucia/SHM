@@ -44,7 +44,8 @@ def get_selection_operator(name: str, config: Dict[str, Any]) -> Union[str, Sele
         "sus": "sus",
         "rank": "rank",
         "random": "random",
-        "tournament": "tournament"
+        "tournament": "tournament",
+        "nsga2": "nsga2",
     }
     
     custom_operators = {

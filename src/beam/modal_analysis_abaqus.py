@@ -16,7 +16,7 @@ import os
 from abaqusConstants import *
 from pathlib import Path
 
-def calc_modal(elastic_modulus, length, width, height, density, poisson, n_elements, n_eigen):
+def calc_modal(elastic_modulus, length, width, height, density, poisson, n_elements, n_eigen, n_mp):
     """Calculate modal properties of beam
     Args:
         elastic_modulus: Array of elastic moduli for each segment
@@ -165,4 +165,4 @@ def calc_modal(elastic_modulus, length, width, height, density, poisson, n_eleme
     # Change back to original directory
     os.chdir('..')
 
-    return frequencies, mode_shapes_U2
+    return frequencies, mode_shapes_U2[::int(n_elements/(n_mp-1)),:]

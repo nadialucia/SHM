@@ -16,7 +16,8 @@ class Beam:
         # Set default properties first
         self._set_default_properties()
         
-        self._load_config(config)
+        if config is not None:
+            self._load_config(config)
         
         # Override E_vector if provided
         if E_vector is not None:
@@ -39,6 +40,7 @@ class Beam:
         # Default mesh properties
         self.n_segments = 10
         self.n_elements = 100
+        self.n_mp = 21
         
         # Initialize default uniform E vector
         self.E_vector = np.array([self.E] * self.n_segments)
@@ -54,6 +56,7 @@ class Beam:
         # Mesh
         self.n_segments = config['mesh']['n_p']
         self.n_elements = config['mesh']['n_e']
+        self.n_mp = config['mesh']['n_mp']
         
         # Material
         self.E = config['material']['E']
@@ -64,11 +67,54 @@ class Beam:
         if not hasattr(self, 'E_vector') or len(self.E_vector) != self.n_segments:
             self.E_vector = np.array([self.E] * self.n_segments)
         
-    def apply_damage(self, element, factor):
-        """Apply damage to specific element"""
-        self.E_vector[element] *= (1 - factor)
+    def apply_damage(self, damage_config):
+        """
+        Apply damage to beam elements based on damage configuration.
         
-    def get_modal_properties(self, n_eigen=4, use_abaqus=False):
+        Parameters:
+        -----------
+        damage_config : dict or list
+            Either a single damage case dict with 'element' and 'factor',
+            or a list of such dicts for multiple damage locations.
+            Example:
+            {
+                'element': 4,
+                'factor': 0.5
+            }
+            or
+            [
+                {'element': 4, 'factor': 0.5},
+                {'element': 3, 'factor': 0.3}
+            ]
+        """
+        # Reset E_vector to undamaged state
+        self.E_vector = np.array([self.E] * self.n_segments)
+        
+        # Handle both single damage case and multiple damage cases
+        if isinstance(damage_config, dict):
+            damage_cases = [damage_config]
+        else:
+            damage_cases = damage_config
+        
+        # Apply each damage case
+        for case in damage_cases:
+            element = case.get('element')
+            factor = case.get('factor')
+            
+            if element is None or factor is None:
+                raise ValueError("Damage case must specify both 'element' and 'factor'")
+            
+            if not (0 <= element < self.n_segments):
+                raise ValueError(f"Element index {element} out of range [0, {self.n_segments-1}]")
+            
+            if not (0 <= factor <= 1):
+                raise ValueError(f"Damage factor {factor} must be between 0 and 1")
+            
+            # Apply damage factor to specified element
+            self.E_vector[element] *= (1 - factor)
+        
+        
+    def get_modal_properties(self, n_eigen, use_abaqus=False):
         """Calculate modal properties using current E vector"""
         if use_abaqus:
             from .modal_analysis_abaqus import calc_modal
@@ -83,5 +129,6 @@ class Beam:
             density=self.density,
             poisson=self.poisson,
             n_elements=self.n_elements,
-            n_eigen=n_eigen
+            n_eigen=n_eigen,
+            n_mp=self.n_mp
         )

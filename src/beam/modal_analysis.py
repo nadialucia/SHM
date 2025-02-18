@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.linalg import eigh
 
-def calc_modal(elastic_modulus, length, width, height, density, poisson, n_elements, n_eigen):
+def calc_modal(elastic_modulus, length, width, height, density, poisson, n_elements, n_eigen, n_mp):
     """
     Calculate modal properties of a beam using FEM
     
@@ -104,5 +104,5 @@ def calc_modal(elastic_modulus, length, width, height, density, poisson, n_eleme
             mode_shapes[:, i] *= -1  # Flip sign of entire mode shape
     
 
-    return frequencies[:n_eigen], mode_shapes[::2, :n_eigen].T
+    return frequencies[:n_eigen], mode_shapes[::2, :n_eigen][::int(n_elements/(n_mp-1)), :].T
     
