@@ -8,6 +8,7 @@ geometry:
 mesh:
   n_p: 10  # number of partitions - used to generate example beam
   n_e: 100 # number of elements
+  n_mp: 21 # number of measuring points
 
 # Material properties
 material:

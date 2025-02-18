@@ -1,7 +1,20 @@
-beam_config: "config/beam_properties.yaml"
-n_modes: 4
+output: "noisy_runs.jsonl"
 damage_cases:
-  - element: 4
-    factor: 0.5  # 30% reduction in stiffness
-  # - element: 3
-  #   factor: 0.3
+  - # Element 0 with 5% reduction
+    - element: 0
+      factor: 0.05  # 5% reduction in stiffness
+  - # Element 0 with 10% reduction
+    - element: 0
+      factor: 0.1  # 10% reduction in stiffness
+  - # Element 0 with 20% reduction
+    - element: 0
+      factor: 0.2  # 20% reduction in stiffness
+  - # Element 4 with 5% reduction
+    - element: 4
+      factor: 0.05  # 5% reduction in stiffness
+  - # Element 4 with 10% reduction
+    - element: 4
+      factor: 0.1  # 10% reduction in stiffness
+  - # Element 4 with 20% reduction
+    - element: 4
+      factor: 0.2  # 20% reduction in stiffness
