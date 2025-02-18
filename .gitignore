@@ -13,7 +13,8 @@ logs/
 abaqus_files/
 
 # Results
-results/
+results/ga*
+
 
 # Transcript
 sem*
