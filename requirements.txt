@@ -1,2 +1,5 @@
 pyyaml
 pygad
+pandas
+tqdm
+scipy
